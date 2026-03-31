@@ -1,0 +1,28 @@
+# Dependencies
+node_modules/
+
+# Environment secrets
+.env
+.env.local
+.env.*.local
+
+# Build output
+dist/
+
+# Test reports (upload as CI artifacts instead)
+reports/*
+!reports/.gitkeep
+
+# Scripts (managed locally)
+scripts/
+
+# Docs and plans
+docs/
+
+# OS artifacts
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
