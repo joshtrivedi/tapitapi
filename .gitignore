@@ -15,6 +15,9 @@ dist/
 ui/.next/
 ui/out/
 
+# SQLite database
+ui/data/
+
 # Test reports (upload as CI artifacts instead)
 core/reports/*
 !core/reports/.gitkeep
