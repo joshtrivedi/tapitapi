@@ -16,9 +16,6 @@ dist/
 reports/*
 !reports/.gitkeep
 
-# Scripts (managed locally)
-scripts/
-
 # Docs and plans
 docs/
 
