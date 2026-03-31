@@ -1,8 +1,9 @@
 # Dependencies
 node_modules/
 
-# Provider implementations (private — each user adds their own)
+# Provider implementations and fixtures (private — each user adds their own)
 providers/
+fixtures/
 
 # Environment secrets
 .env
@@ -11,10 +12,12 @@ providers/
 
 # Build output
 dist/
+ui/.next/
+ui/out/
 
 # Test reports (upload as CI artifacts instead)
-reports/*
-!reports/.gitkeep
+core/reports/*
+!core/reports/.gitkeep
 
 # Docs and plans
 docs/
