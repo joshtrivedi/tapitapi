@@ -1,6 +1,9 @@
 # Dependencies
 node_modules/
 
+# Provider implementations (private — each user adds their own)
+providers/
+
 # Environment secrets
 .env
 .env.local
