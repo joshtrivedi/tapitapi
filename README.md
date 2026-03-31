@@ -21,14 +21,14 @@ A structured, extensible framework for validating and exploring HTTP APIs. Curre
 ## Project Structure
 
 ```
-├── providers/              one folder per API provider
-│   └── dat-ai/
+├── providers/              one folder per API provider (gitignored — private)
+│   └── <your-provider>/
 │       ├── config.ts
 │       ├── schemas.ts
 │       ├── endpoints/
 │       └── tests/
 ├── shared/                 reusable http client, auth, assertions, logger
-├── fixtures/               request payloads per provider
+├── fixtures/               request payloads per provider (gitignored — private)
 └── reports/                generated test output (gitignored)
 ```
 
@@ -69,10 +69,10 @@ DAT_AI_BASE_URL=your_base_url_here
 npm test
 
 # Single provider
-npm test -- providers/dat-ai
+npm test -- providers/<your-provider>
 
 # Single file
-npm test -- providers/dat-ai/tests/completions.post.test.ts
+npm test -- providers/<your-provider>/tests/<endpoint>.test.ts
 
 # Watch mode
 npm run test:watch

@@ -1,8 +1,9 @@
 # Dependencies
 node_modules/
 
-# Provider implementations (private — each user adds their own)
+# Provider implementations and fixtures (private — each user adds their own)
 providers/
+fixtures/
 
 # Environment secrets
 .env
