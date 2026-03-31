@@ -1,12 +1,32 @@
 import Navbar from "@/components/Navbar";
 import Link from "next/link";
+import db from "@/lib/db";
+import RunRow from "@/components/RunRow";
+import type { TestRun } from "@/app/results/page";
 
-const stats = [
-  { label: "Providers", value: "0" },
-  { label: "Endpoints", value: "0" },
-  { label: "Tests Passed", value: "0" },
-  { label: "Tests Failed", value: "0" },
-];
+function getStats() {
+  const providers = (db.prepare(`SELECT COUNT(*) as n FROM providers`).get() as { n: number }).n;
+  const endpoints = (db.prepare(`SELECT COUNT(*) as n FROM endpoints`).get() as { n: number }).n;
+  const passed = (db.prepare(`SELECT COUNT(*) as n FROM test_runs WHERE status = 'passed'`).get() as { n: number }).n;
+  const failed = (db.prepare(`SELECT COUNT(*) as n FROM test_runs WHERE status IN ('failed', 'error')`).get() as { n: number }).n;
+  return { providers, endpoints, passed, failed };
+}
+
+function getRecentRuns(): TestRun[] {
+  return db
+    .prepare(
+      `SELECT
+         r.id, r.status, r.status_code, r.latency_ms, r.response_body, r.error, r.ran_at,
+         p.name as provider_name,
+         e.method, e.path
+       FROM test_runs r
+       JOIN providers p ON p.id = r.provider_id
+       LEFT JOIN endpoints e ON e.id = r.endpoint_id
+       ORDER BY r.ran_at DESC
+       LIMIT 5`
+    )
+    .all() as TestRun[];
+}
 
 const quickActions = [
   { href: "/providers/new", label: "Add Provider", primary: true },
@@ -14,6 +34,16 @@ const quickActions = [
 ];
 
 export default function Home() {
+  const { providers, endpoints, passed, failed } = getStats();
+  const recentRuns = getRecentRuns();
+
+  const stats = [
+    { label: "Providers", value: providers },
+    { label: "Endpoints", value: endpoints },
+    { label: "Tests Passed", value: passed },
+    { label: "Tests Failed", value: failed },
+  ];
+
   return (
     <div className="flex flex-col min-h-screen">
       <Navbar />
@@ -62,21 +92,32 @@ export default function Home() {
           ))}
         </section>
 
-        {/* Recent activity */}
+        {/* Recent runs */}
         <section className="flex flex-col gap-4">
-          <h2 className="text-lg font-bold text-[var(--foreground)]">Recent Runs</h2>
+          <div className="flex items-center justify-between">
+            <h2 className="text-lg font-bold text-[var(--foreground)]">Recent Runs</h2>
+            {recentRuns.length > 0 && (
+              <Link href="/results" className="text-sm text-[var(--brand-accent)] hover:underline">
+                View all →
+              </Link>
+            )}
+          </div>
 
           <div className="rounded-lg border border-[var(--border)] bg-[var(--surface)] divide-y divide-[var(--border)]">
-            <div className="px-6 py-12 flex flex-col items-center gap-3 text-center">
-              <div className="w-10 h-10 rounded-full bg-[var(--brand-primary)] opacity-20" />
-              <p className="text-[var(--foreground-muted)] text-sm">
-                No test runs yet.{" "}
-                <Link href="/providers/new" className="text-[var(--brand-accent)] hover:underline">
-                  Add a provider
-                </Link>{" "}
-                to get started.
-              </p>
-            </div>
+            {recentRuns.length > 0 ? (
+              recentRuns.map((run) => <RunRow key={run.id} run={run} />)
+            ) : (
+              <div className="px-6 py-12 flex flex-col items-center gap-3 text-center">
+                <div className="w-10 h-10 rounded-full bg-[var(--brand-primary)] opacity-20" />
+                <p className="text-[var(--foreground-muted)] text-sm">
+                  No test runs yet.{" "}
+                  <Link href="/providers/new" className="text-[var(--brand-accent)] hover:underline">
+                    Add a provider
+                  </Link>{" "}
+                  to get started.
+                </p>
+              </div>
+            )}
           </div>
         </section>
 

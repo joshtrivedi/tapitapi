@@ -9,6 +9,7 @@ const navLinks = [
   { href: "/endpoints", label: "Endpoints" },
   { href: "/tests", label: "Tests" },
   { href: "/results", label: "Results" },
+  { href: "/settings", label: "Settings" },
 ];
 
 export default function Navbar() {
