@@ -17,12 +17,16 @@ const statusStyle: Record<string, string> = {
   error: "bg-yellow-100 text-yellow-700 border-yellow-200",
 };
 
+const MONTHS = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+
 function formatDate(iso: string) {
   const d = new Date(iso.endsWith("Z") ? iso : iso + "Z");
-  return d.toLocaleString(undefined, {
-    month: "short", day: "numeric",
-    hour: "2-digit", minute: "2-digit", second: "2-digit",
-  });
+  const mon = MONTHS[d.getUTCMonth()];
+  const day = d.getUTCDate();
+  const hh = String(d.getUTCHours()).padStart(2, "0");
+  const mm = String(d.getUTCMinutes()).padStart(2, "0");
+  const ss = String(d.getUTCSeconds()).padStart(2, "0");
+  return `${mon} ${day}, ${hh}:${mm}:${ss} UTC`;
 }
 
 export default function RunRow({ run }: { run: TestRun }) {
