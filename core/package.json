@@ -1,0 +1,24 @@
+{
+  "name": "tapitapi",
+  "version": "0.1.0",
+  "description": "API Tester for everyone",
+  "type": "module",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "test": "vitest run --testTimeout=600000",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage",
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "typescript": "^5.0.0",
+    "vitest": "^4.1.2"
+  },
+  "dependencies": {
+    "dotenv": "^16.0.0",
+    "zod": "^3.25.76"
+  }
+}

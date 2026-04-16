@@ -1,0 +1,44 @@
+@import "tailwindcss";
+@variant dark (&:where(.dark, .dark *));
+
+:root {
+  /* Brand palette */
+  --brand-navy: #0D1A63;
+  --brand-blue: #1A2CA3;
+  --brand-primary: #2845D6;
+  --brand-accent: #F68048;
+
+  /* Light mode */
+  --background: #ffffff;
+  --surface: #f4f6fb;
+  --foreground: #0D1A63;
+  --foreground-muted: #4a5580;
+  --border: #d0d7f0;
+}
+
+html.dark {
+  --background: #0D1A63;
+  --surface: #1A2CA3;
+  --foreground: #f0f3ff;
+  --foreground-muted: #a0addc;
+  --border: #2845D6;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-surface: var(--surface);
+  --color-foreground: var(--foreground);
+  --color-foreground-muted: var(--foreground-muted);
+  --color-border: var(--border);
+  --color-brand-navy: var(--brand-navy);
+  --color-brand-blue: var(--brand-blue);
+  --color-brand-primary: var(--brand-primary);
+  --color-brand-accent: var(--brand-accent);
+  --font-sans: var(--font-caudex);
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-caudex), Georgia, serif;
+}

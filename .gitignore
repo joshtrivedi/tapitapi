@@ -1,0 +1,37 @@
+# Dependencies
+node_modules/
+
+# Provider implementations and fixtures (private — each user adds their own)
+providers/
+fixtures/
+
+# Environment secrets
+.env
+.env.local
+.env.*.local
+
+# Build output
+dist/
+ui/.next/
+ui/out/
+
+# SQLite database
+ui/data/
+
+# Test reports (upload as CI artifacts instead)
+core/reports/*
+!core/reports/.gitkeep
+
+# Docs and plans
+docs/
+
+# OS artifacts
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+
+# Claude Code local config
+.claude/
