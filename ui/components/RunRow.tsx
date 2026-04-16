@@ -83,8 +83,46 @@ export default function RunRow({ run }: { run: TestRun }) {
             </div>
           )}
           {run.response_body ? (
-            <div className="mt-3">
-              <p className="text-xs font-bold text-[var(--foreground-muted)] uppercase tracking-wider mb-1">Response</p>
+            <div className="mt-3 flex flex-col gap-2">
+              <div className="flex items-center justify-between">
+                <p className="text-xs font-bold text-[var(--foreground-muted)] uppercase tracking-wider">Response</p>
+                <div className="flex items-center gap-3">
+                  <button
+                    onClick={() => {
+                      const raw = run.response_body!;
+                      const urls = Array.from(new Set(
+                        (raw.match(/https?:\/\/[^\s"'\\>\]\)]+/g) ?? [])
+                          .map((u) => u.replace(/[.,;:!?]+$/, ""))
+                      ));
+                      if (urls.length === 0) return;
+                      const csv = "url\n" + urls.map((u) => `"${u.replace(/"/g, '""')}"`).join("\n");
+                      const blob = new Blob([csv], { type: "text/csv" });
+                      const a = document.createElement("a");
+                      a.href = URL.createObjectURL(blob);
+                      a.download = `urls-${run.id}.csv`;
+                      a.click();
+                      URL.revokeObjectURL(a.href);
+                    }}
+                    className="text-xs text-[var(--brand-primary)] hover:underline"
+                  >
+                    ↓ Extract URLs
+                  </button>
+                  <button
+                    onClick={() => {
+                      const blob = new Blob([run.response_body!], { type: "application/json" });
+                      const url = URL.createObjectURL(blob);
+                      const a = document.createElement("a");
+                      a.href = url;
+                      a.download = `result-${run.id}.json`;
+                      a.click();
+                      URL.revokeObjectURL(url);
+                    }}
+                    className="text-xs text-[var(--brand-accent)] hover:underline"
+                  >
+                    ↓ Export
+                  </button>
+                </div>
+              </div>
               <pre className="rounded-lg border border-[var(--border)] bg-[var(--surface)] p-4 text-xs font-mono text-[var(--foreground)] overflow-auto max-h-80 whitespace-pre-wrap break-words">
                 {run.response_body}
               </pre>
