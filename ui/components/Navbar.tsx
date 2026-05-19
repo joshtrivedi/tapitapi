@@ -8,6 +8,7 @@ const navLinks = [
   { href: "/providers", label: "Providers" },
   { href: "/endpoints", label: "Endpoints" },
   { href: "/tests", label: "Tests" },
+  { href: "/batch", label: "Batch" },
   { href: "/results", label: "Results" },
   { href: "/settings", label: "Settings" },
 ];
