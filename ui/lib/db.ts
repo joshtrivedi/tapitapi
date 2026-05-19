@@ -36,6 +36,14 @@ db.exec(`
     created_at  TEXT NOT NULL DEFAULT (datetime('now'))
   );
 
+  CREATE TABLE IF NOT EXISTS oauth_sessions (
+    id            TEXT PRIMARY KEY,
+    client_id     TEXT NOT NULL,
+    client_secret TEXT NOT NULL,
+    vin           TEXT NOT NULL,
+    created_at    TEXT NOT NULL DEFAULT (datetime('now'))
+  );
+
   CREATE TABLE IF NOT EXISTS test_runs (
     id            TEXT PRIMARY KEY,
     provider_id   TEXT NOT NULL REFERENCES providers(id) ON DELETE CASCADE,

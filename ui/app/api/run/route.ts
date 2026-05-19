@@ -32,12 +32,26 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "Endpoint not found" }, { status: 404 });
   }
 
-  const provider = db
+  let provider = db
     .prepare(`SELECT * FROM providers WHERE id = ?`)
     .get(endpoint.provider_id) as Provider | undefined;
 
   if (!provider) {
     return NextResponse.json({ error: "Provider not found" }, { status: 404 });
+  }
+
+  // Auto-refresh OAuth2 token if expired
+  if (provider.auth_type === "oauth2") {
+    const cfg = JSON.parse(provider.auth_config) as { expires_at?: string };
+    if (cfg.expires_at && new Date(cfg.expires_at) <= new Date()) {
+      const origin = new URL(req.url).origin;
+      await fetch(`${origin}/api/auth/tesla/refresh`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ providerId: provider.id }),
+      });
+      provider = db.prepare(`SELECT * FROM providers WHERE id = ?`).get(provider.id) as Provider;
+    }
   }
 
   // Build auth headers
@@ -49,6 +63,8 @@ export async function POST(req: Request) {
   } else if (provider.auth_type === "api-key") {
     const headerName = authConfig.headerName ?? "X-API-Key";
     headers[headerName] = authConfig.key;
+  } else if (provider.auth_type === "oauth2") {
+    headers["Authorization"] = `Bearer ${authConfig.token}`;
   }
 
   const url = queryParams
