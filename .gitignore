@@ -2,8 +2,9 @@
 node_modules/
 
 # Provider implementations and fixtures (private — each user adds their own)
-providers/
-fixtures/
+/providers/
+/core/providers/
+/fixtures/
 
 # Environment secrets
 .env
