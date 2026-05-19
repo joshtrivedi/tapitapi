@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 
 const TESLA_TOKEN_URL = "https://auth.tesla.com/oauth2/v3/token";
-const TESLA_BASE_URL = "https://fleet-api.prd.na.vn.cloud.tesla.com";
+const TESLA_BASE_URL = "https://fleet-api.prd.eu.vn.cloud.tesla.com";
 
 export async function POST(req: Request) {
   const { clientId, clientSecret, domain } = await req.json();

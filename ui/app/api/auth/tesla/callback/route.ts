@@ -3,7 +3,7 @@ import db from "@/lib/db";
 import { randomUUID } from "crypto";
 
 const TESLA_TOKEN_URL = "https://auth.tesla.com/oauth2/v3/token";
-const TESLA_BASE_URL = "https://fleet-api.prd.na.vn.cloud.tesla.com";
+const TESLA_BASE_URL = "https://fleet-api.prd.eu.vn.cloud.tesla.com";
 const REDIRECT_URI = "http://localhost:3000/api/auth/tesla/callback";
 
 interface OAuthSession {
